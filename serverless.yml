@@ -1,0 +1,40 @@
+service: serverless-jvillegas
+
+frameworkVersion: '3'
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  iam:
+    role: arn:aws:iam::756142517077:role/LabRole
+  environment:
+    USERS_TABLE: ${self:service}-users-${sls:stage}
+
+functions:
+  login:
+    handler: handler.login
+    events:
+      - httpApi:
+          path: /login
+          method: post
+
+  users:
+    handler: handler.users
+    events:
+      - httpApi:
+          path: /users
+          method: get
+
+resources:
+  Resources:
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.USERS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH

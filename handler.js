@@ -12,7 +12,7 @@ module.exports.login = async (event) => {
   if (username === 'admin' && password === '1234!') {
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'Login correcto', token: 'fake-jwt-token' }),
+      body: JSON.stringify({ message: 'Login correcto - API serverless jvillegas v2', token: 'fake-jwt-token' }),
     };
   }
   return {
